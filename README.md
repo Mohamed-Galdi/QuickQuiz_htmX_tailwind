@@ -1,0 +1,1 @@
+# Quiq Quiz: an htmx and tailwind app
