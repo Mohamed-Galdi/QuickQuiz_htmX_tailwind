@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trivia App</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
+    <script src="https://unpkg.com/mustache@latest"></script>
+  </head>
+  <body>
+    <div hx-ext="client-side-templates">
+      <button
+        hx-get="https://the-trivia-api.com/v2/questions?limit=1&category=8"
+        hx-swap="innerHTML"
+        hx-target="#quiz-container"
+        mustache-array-template="quiz-template"
+      >
+        Get Trivia
+      </button>
+
+      <div id="quiz-container">Click the button to get a trivia question.</div>
+
+      <template id="quiz-template" type="text/template">
+        {{#data}}
+
+        <h2>{{question.text}}</h2>
+        <ul>
+          {{#incorrectAnswers}}
+          <li>{{.}}</li>
+          {{/incorrectAnswers}}
+          <li>{{correctAnswer}}</li>
+        </ul>
+        {{/data}}
+      </template>
+    </div>
+  </body>
+</html>

@@ -19,7 +19,7 @@ This project uses CDN links for htmx, Tailwind CSS, and Nunjucks. There are no a
 Contributions are welcome! If you find a bug or have an enhancement in mind, please open an issue or submit a pull request.
 
 ## Acknowledgments
-[quizapi.io](quizapi.io) for providing the free API for quizzes.
+[quizapi.io](https://quizapi.io/) for providing the free API for quizzes.
 [htmx](https://htmx.org/) for enabling seamless client-server communication.
 [Tailwind](https://tailwindcss.com/) CSS for the responsive and utility-first styling.
 [Nunjucks](https://mozilla.github.io/nunjucks/) for the client-side templating.
