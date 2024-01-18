@@ -4,36 +4,79 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trivia App</title>
-    <script src="https://unpkg.com/htmx.org"></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script>
-    <script src="https://unpkg.com/mustache@latest"></script>
+    <title>QuickQuiz</title>
+    <link rel="icon" type="image/x-icon" href="./assets/favicon.png" />
+
+    
+    <script src="https://unpkg.com/htmx.org"></script>  <!-- htmx link -->
+    <script src="https://unpkg.com/htmx.org/dist/ext/client-side-templates.js"></script> <!-- client-side-template extension link  -->
+    <script src="https://unpkg.com/nunjucks@latest"></script> <!-- nunjucks link  -->
+    <script src="https://cdn.tailwindcss.com"></script> <!-- tailwind link -->
+
+    <style>
+      body {
+        background-image: url(./assets/bg.jpg);
+        background-size: cover;
+      }
+    </style>
   </head>
   <body>
-    <div hx-ext="client-side-templates">
+    <div
+      class="flex justify-center items-center flex-col mt-24 gap-8"
+      hx-ext="client-side-templates"
+    >
       <button
         hx-get="https://the-trivia-api.com/v2/questions?limit=1&category=8"
         hx-swap="innerHTML"
         hx-target="#quiz-container"
-        mustache-array-template="quiz-template"
+        nunjucks-array-template="quiz-template"
+        class="bg-red-950 text-red-400 border border-red-400 border-b-4 font-medium overflow-hidden relative px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300 group"
       >
-        Get Trivia
+        <span
+          class="bg-red-400 shadow-red-400 absolute -top-[150%] left-0 inline-flex w-80 h-[5px] rounded-md opacity-50 group-hover:top-[150%] duration-500 shadow-[0_0_10px_10px_rgba(0,0,0,0.3)]"
+        ></span>
+        Get A Question
       </button>
 
-      <div id="quiz-container">Click the button to get a trivia question.</div>
+      <div
+        id="quiz-container"
+        class="text-gray-400 text-center md:w-[50%] font-bold mt-6 p-3 rounded-lg border-2 border-white bg-white/10 shadow-lg"
+      >
+        Click the button to start the QuickQuiz
+      </div>
 
-      <template id="quiz-template" type="text/template">
-        {{#data}}
-
-        <h2>{{question.text}}</h2>
-        <ul>
-          {{#incorrectAnswers}}
-          <li>{{.}}</li>
-          {{/incorrectAnswers}}
-          <li>{{correctAnswer}}</li>
+      <script type="text/nunjucks" id="quiz-template">
+        {% for question in data %}
+        <h2 class="text-[#ef007d] p-2 rounded-md bg-gray-300 text-center">{{ question.question.text }}</h2>
+        <ul class="grid md:grid-cols-2 grid-cols-1 gap-4 mt-4 text-center text-white">
+          {% for answer in question.incorrectAnswers %}
+          <li class="border-[#ef007d]/50 p-1 border-2 rounded-lg hover:bg-[#ef007d]/60 hover:border-[#ef007d]  hover:cursor-pointer"
+           hx-on:click="checkAnswer(this)">{{ answer }}</li>
+          {% endfor %}
+          <li class="border-[#ef007d]/50 p-1 border-2 rounded-lg hover:bg-[#ef007d]/60 hover:border-[#ef007d]  hover:cursor-pointer"
+           hx-on:click="checkAnswer(this)" data-correct="true">{{ question.correctAnswer }}</li>
         </ul>
-        {{/data}}
-      </template>
+        <p class="mt-2 text-white"
+         id="result-message"></p>
+        {% endfor %}
+      </script>
+
+      <script>
+        function checkAnswer(selectedAnswer) {
+          const allAnswers = document.querySelectorAll("#quiz-container ul li");
+          const resultMessage = document.getElementById("result-message");
+
+          allAnswers.forEach((answer) => {
+            const isCorrect = answer.getAttribute("data-correct") === "true";
+            answer.classList.add(isCorrect ? "text-green-500" : "text-red-500");
+          });
+
+          resultMessage.textContent =
+            selectedAnswer.getAttribute("data-correct") === "true"
+              ? "Correct! ✅"
+              : "Incorrect! ❌";
+        }
+      </script>
     </div>
   </body>
 </html>
