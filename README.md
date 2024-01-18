@@ -2,6 +2,8 @@
 
 Quick Quiz is a Single Page Application (SPA) that provides  quizzes using the the-trivia-api API. It is built with htmx for dynamic interactions, styled with Tailwind CSS for a modern and responsive design, and utilizes Nunjucks as the client-side template engine.
 
+## [live website](https://mohamed-galdi.github.io/QuickQuiz_htmX_tailwind/)
+
 ![interface record...](public/assets/interface.gif)
 
 ## Practice Project for htmx
